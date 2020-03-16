@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/lt_test02_shape_wrapper.dir/test02_shape_wrapper.cpp.o  -o lt_test02_shape_wrapper 

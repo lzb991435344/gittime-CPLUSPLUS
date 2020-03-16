@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../common/shape.h
+stdexcept
+-
+stdio.h
+-
+
+/home/ubuntu/CPlusPlus/geek_time_cpp/01/test02_shape_wrapper.cpp
+shape.h
+/home/ubuntu/CPlusPlus/geek_time_cpp/01/shape.h
+

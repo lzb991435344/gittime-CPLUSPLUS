@@ -1,0 +1,11 @@
+*.user
+*~
+*.o
+*.obj
+a.out
+\#*#
+.#*
+build*/
+.vscode/
+.vs/
+*.*.swp

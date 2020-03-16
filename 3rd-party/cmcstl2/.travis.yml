@@ -1,0 +1,61 @@
+# Copyright Casey Carter 2015-2017
+
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE.txt or copy at http://boost.org/LICENSE_1_0.txt)
+
+dist: xenial
+language: cpp
+
+cache:
+  directories:
+    - ${TRAVIS_BUILD_DIR}/deps/cmake-3.12.4
+
+matrix:
+  include:
+    - env: GCC_VERSION=8 BUILD_TYPE=Debug
+      os: linux
+      addons: &gcc8
+        apt:
+          packages:
+            - g++-8
+            - ninja-build
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - env: GCC_VERSION=8 BUILD_TYPE=Release
+      os: linux
+      addons: *gcc8
+
+before_install:
+  - if [ -n "$GCC_VERSION" ]; then export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}"; fi
+  - which $CC
+  - which $CXX
+  - $CXX --version
+  - ninja --version
+  - JOBS=2
+
+install:
+  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+  - mkdir -p "${DEPS_DIR}" && cd "${DEPS_DIR}"
+  ############################################################################
+  # Install a recent CMake (unless already installed on OS X)
+  ############################################################################
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      CMAKE_VERSION=3.12.4
+      if [[ -z "$(ls -A ${DEPS_DIR}/cmake-${CMAKE_VERSION}/bin)" ]]; then
+        CMAKE_URL="https://cmake.org/files/v3.12/cmake-3.12.4-Linux-x86_64.tar.gz"
+        mkdir -p "cmake-${CMAKE_VERSION}" && travis_retry wget --no-check-certificate --quiet -O - "${CMAKE_URL}" | tar --strip-components=1 -xz -C "cmake-${CMAKE_VERSION}"
+      fi
+      export PATH="${DEPS_DIR}/cmake-${CMAKE_VERSION}/bin:${PATH}"
+    fi
+
+before_script:
+  - cd "${TRAVIS_BUILD_DIR}"
+  - mkdir -p build
+  - cd build
+  - cmake .. -G Ninja -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="${CXX_FLAGS}"
+  - ninja -v
+
+script:
+  - ctest -j${JOBS} --output-on-failure
