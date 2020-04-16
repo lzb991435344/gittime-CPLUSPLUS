@@ -135,6 +135,16 @@ void swap(smart_ptr<T>& lhs, smart_ptr<T>& rhs) noexcept
 template <typename T, typename U>
 smart_ptr<T> static_pointer_cast(const smart_ptr<U>& other) noexcept
 {
+    /** static_cast
+    ①用于类层次结构中基类（父类）和派生类（子类）之间指针或引用的转换。
+        进行上行转换（把派生类的指针或引用转换成基类表示）是安全的；
+        进行下行转换（把基类指针或引用转换成派生类表示）时，由于没有动态类型检查，所以是不安全的。
+    ②用于基本数据类型之间的转换，如把int转换成char，把int转换成enum。
+    ③把空指针转换成目标类型的空指针。
+    ④把任何类型的表达式转换成void类型。
+    注意：static_cast不能转换掉expression的const、volatile、或者__unaligned属性
+
+    */
     T* ptr = static_cast<T*>(other.get());
     return smart_ptr<T>(other, ptr);
 }
@@ -142,6 +152,8 @@ smart_ptr<T> static_pointer_cast(const smart_ptr<U>& other) noexcept
 template <typename T, typename U>
 smart_ptr<T> reinterpret_pointer_cast(const smart_ptr<U>& other) noexcept
 {
+    //用于进行各种不同类型的指针之间、不同类型的引用之间以及指针和能容纳
+    //指针的整数类型之间的转换。转换时，执行的是逐个比特复制的操作。
     T* ptr = reinterpret_cast<T*>(other.get());
     return smart_ptr<T>(other, ptr);
 }
