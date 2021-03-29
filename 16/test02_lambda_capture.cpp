@@ -6,6 +6,8 @@
 
 using namespace std;
 
+
+//按值捕获值
 int get_count()
 {
     static int count = 0;
@@ -17,6 +19,9 @@ public:
     task(int data) : data_(data) {}
     auto lazy_launch()
     {
+        //按值捕获外围对象 *this
+        //mutable 捕获的内容可更改
+        //count = get_count() 在生成lamba表达式时计算并储存等号后的表达式的结果
         return [*this, count = get_count()]() mutable {
             ostringstream oss;
             oss << "Done work " << data_ << " (No. " << count
@@ -39,6 +44,7 @@ private:
 int main()
 {
     auto t = task{37};
+    //多线程既复制了任务对象，也可以进行独立运算
     thread t1{t.lazy_launch()};
     thread t2{t.lazy_launch()};
     t1.join();
