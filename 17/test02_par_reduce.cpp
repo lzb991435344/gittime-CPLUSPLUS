@@ -6,6 +6,8 @@
 
 using namespace std;
 
+
+//mapreduce并行
 int main()
 {
     vector<double> v(10000000, 0.0625);
