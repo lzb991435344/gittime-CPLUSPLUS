@@ -3,6 +3,10 @@
 
 using namespace std;
 
+//数值计算  计算一个二进制串中1比特的数量
+//使用编译期编程
+
+//计算单个数值
 constexpr int count_bits(unsigned char value)
 {
     if (value == 0) {
@@ -14,6 +18,7 @@ constexpr int count_bits(unsigned char value)
 
 template <size_t... V>
 struct bit_count_t {
+    //sizeof...(V) 获得参数的个数
     unsigned char count[sizeof...(V)] = {
         static_cast<unsigned char>(count_bits(V))...};
 };
@@ -24,6 +29,7 @@ bit_count_t<V...> get_bit_count(index_sequence<V...>)
     return bit_count_t<V...>();
 }
 
+//全局
 auto bit_count = get_bit_count(make_index_sequence<256>());
 
 int main()

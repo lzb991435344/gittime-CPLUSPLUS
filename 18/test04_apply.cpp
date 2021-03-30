@@ -11,6 +11,8 @@ struct integer_sequence {};
 template <size_t... Ints>
 using index_sequence = integer_sequence<size_t, Ints...>;
 
+
+//重载函数
 template <size_t N, size_t... Ints>
 struct index_sequence_helper {
     typedef
@@ -21,6 +23,9 @@ template <size_t... Ints>
 struct index_sequence_helper<0, Ints...> {
     typedef index_sequence<Ints...> type;
 };
+
+
+
 
 template <size_t N>
 using make_index_sequence = typename index_sequence_helper<N>::type;
