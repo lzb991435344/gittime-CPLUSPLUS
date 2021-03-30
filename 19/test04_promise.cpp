@@ -31,13 +31,17 @@ private:
 void work(promise<int> prom)
 {
     this_thread::sleep_for(2s);
+    //不需要在一个函数结束的时候去设置future的值
     prom.set_value(42);
 }
 
 int main()
 {
+    //承诺量 promise<int> pro;
+    //promise和future 结对出现，且只能使用一次
     promise<int> prom;
     auto fut = prom.get_future();
+
     scoped_thread th{work, move(prom)};
     cout << "I am waiting now\n";
     cout << "Answer: " << fut.get() << '\n';

@@ -9,8 +9,8 @@ mutex output_lock;
 
 void func(const char* name)
 {
-    this_thread::sleep_for(100ms);
-    lock_guard<mutex> guard{output_lock};
+    this_thread::sleep_for(100ms);//每个线程分别睡100ms
+    lock_guard<mutex> guard{output_lock}; //使用互斥量锁住 cout
     cout << "I am thread " << name << '\n';
 }
 

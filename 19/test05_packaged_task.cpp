@@ -36,8 +36,11 @@ int work()
 
 int main()
 {
+    //打包任务打包的是一个函数，模板参数就是一个函数类型
+    //packaged_task只能移动，不能复制
     packaged_task<int()> task{work};
-    auto fut = task.get_future();
+    //函数对象，既可以被调用，也可以传递给thread在新线程中移动
+    auto fut = task.get_future();//得到打包任务的返回值，或者得知打包任务已经结束了
     scoped_thread th{move(task)};
     this_thread::sleep_for(1s);
     cout << "I am waiting now\n";
